@@ -1,9 +1,11 @@
-from django.urls import path
+from django.conf.urls import url
 
-from quora.views.common import RedirectView, HomeView
+from quora.views.common import HomeView, SignupView, LogoutView
 
 app_name = 'quora'
 urlpatterns = [
-    path('', RedirectView.as_view(), name='redirect'),
-    path('quora', HomeView.as_view(), name='home'),
+    url(r'^signup', SignupView.as_view(), name='signup'),
+    url(r'^login', HomeView.as_view(), name='login'),
+    url(r'^logout', LogoutView.as_view(), name='logout'),
+    url(r'', HomeView.as_view(), name='home'),
 ]

@@ -1,0 +1,29 @@
+{% extends 'quora/common/base.haml' %}
+
+{% block content %}
+
+{% if form.non_field_errors %}
+.alert.alert-danger.alert-dismissible.fade.show{:role => "alert"}
+  {% for error in form.non_field_errors %}
+  %p {{ error }}
+  {% endfor %}
+  %button.close{:type => "button", :data-dismiss => "alert", :area-label => "Close" }
+  %span{:aria-hidden => "true"}&times;
+{% endif %}
+
+.row
+  .col.s8.m6.l4
+
+    %form{:action => "{% url 'quora:signup' %}", :method => "post"}
+      {% csrf_token %}
+      {% for field in form %}
+      .input-field
+        {{ field.errors }}
+        {{ field.label_tag }} {{ field }}
+        {% if field.help_text %}
+        %p.help {{ field.help_text|safe }}
+        {% endif %}
+      {% endfor %}
+      %button.btn.blue.darken-3{:type => "submit"}Sign up
+
+{% endblock %}

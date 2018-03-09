@@ -5,17 +5,23 @@
     %meta{:charset => "utf-8"}
     %meta{:content => "width=device-width, initial-scale=1, shrink-to-fit=no", :name => "viewport"}
 
-    %title {% block title %}Quora{% endblock %}
-    %link{:href => "{% static 'app/img/favicon.png' %}", :rel => "icon"}
+    %title {% block title %}Quora - A place to share knowledge and better understand the world.{% endblock %}
+    %link{:href => "{% static 'quora/img/favicon.png' %}", :rel => "icon"}
+    
+    <!--Import Google Icon Font-->
+    %link{:href => "https://fonts.googleapis.com/icon?family=Material+Icons", :rel => "stylesheet"}
+    <!-- Import materialize.css -->
+    %link{:rel => "stylesheet", :href => "https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.css", :type => "text/css", :media => "screen,projection"}
 
-    %link{:crossorigin => "anonymous", :href => "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css", :integrity => "sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm", :rel => "stylesheet"}
+    <!--Import jQuery before materialize.js-->
+    %script{:type => "text/javascript", :src => "https://code.jquery.com/jquery-3.2.1.min.js"}
+    %script{:type => "text/javascript", :src => "https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.js"}
 
   %body
-    {% block content %}
+    .container
+      {% block content %}
 
-    {% endblock %}
-  %footer
-    %a{:href => "https://github.com/gnsharma/django-hospital-app"} GitHub repository
+      {% endblock %}
 
   {% block script %}
 
