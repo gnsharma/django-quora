@@ -18,7 +18,6 @@ class FeedView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         latest_questions_list = Question.objects.filter(pub_date__lte=timezone.now()).filter(
             pub_date__gte=timezone.now() - datetime.timedelta(days=1)).order_by('-pub_date')
-        import ipdb; ipdb.set_trace()
         return render(request, 'quora/feed/latest_feed.haml', {'questions': latest_questions_list})
 
 

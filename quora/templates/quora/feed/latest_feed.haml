@@ -3,16 +3,21 @@
 {% block content %}
 %nav
   .nav-wrapper
-    %a.brand-logo.right{:href => "{% url 'quora:home' %}" }Quora 
-    %ul#nav-mobile.left.hide-on-med-and-down
+    %a.brand-logo.left{:href => "{% url 'quora:home' %}" }Quora 
+    %ul#nav-mobile.right.hide-on-med-and-down
       %li
         %a{:href => "{% url 'quora:home' %}" } Home
       %li
         %a{:href => "{% url 'quora:logout' %}" } Logout
 
 .row
-  .col s3
-  .col s9
+  .col.s3
+    %p
+      Feeds
+    .divider  
+    %p
+      Latest Questions
+  .col.s9
     {% if questions %}
     {% for question in questions %}
     .card

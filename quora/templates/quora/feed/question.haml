@@ -3,19 +3,40 @@
 {% block content %}
 %nav
   .nav-wrapper
-    %a.brand-logo.right{:href => "{% url 'quora:home' %}" }Quora 
-    %ul#nav-mobile.left.hide-on-med-and-down
+    %a.brand-logo.left{:href => "{% url 'quora:home' %}" }Quora 
+    %ul#nav-mobile.right.hide-on-med-and-down
       %li
         %a{:href => "{% url 'quora:home' %}" } Home
       %li
         %a{:href => "{% url 'quora:logout' %}" } Logout
 
-%ul
-  %li
-    {{ question.question_text }}
-  {% for answer in question.answer_set.all %}
-    %li {{ answer.answer_text }} -- {{ answer.votes }} vote{{ answer.votes|pluralize }}
-  {% endfor %} 
+.row
+  .col.s9
+    .section.horizontal
+      %h5 {{ question.question_text }}
+    .divider
+    .section.center
+      %i.material-icons person
+      %p
+        %strong {{request.user.username|capfirst}}, can you answer this question?
+      %p People are searching for a better answer to this question
+      %a.btn.indigo.blue-text.lighten-5{:href => "{% url 'quora:home' %}" } 
+        %i.material-icons create
+        Answer
+    %h6 
+      %strong {{ question.answer_set.all.count }} Answer{{question.answer_set.all.count|pluralize}}
+    .divider
+    {% for answer in question.answer_set.all %}
+    .section
+      %h5 
+        %i.material-icons person 
+        {{answer.user.username}}
+      %p
+        {{ answer.answer_text }}
+      %a.btn.small.indigo.lighten-5.blue-text{:href => "{% url 'quora:home' %}" } Upvote | {{ answer.votes }}
+      %a.btn-flat.grey-text.lighten-2{:href => "{% url 'quora:home' %}"} Downvote
+    .divider
+    {% endfor %} 
 
 {% endblock %}
 
