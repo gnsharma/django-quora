@@ -18,4 +18,6 @@ from quora.forms import SignupForm, LoginForm
 class AddAnswerView(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
-        
+        question = Question.objects.get(pk=kwargs['id'])
+        form = AnswerForm()
+        return render(request, 'quora/feed/answer.haml', {'form': form})

@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.conf.urls import include, url 
 
 urlpatterns = [
-    url(r'^admin/$', admin.site.urls),
+    url(r'^admin/', admin.site.urls),
     url(r'^oauth/', include('social_django.urls', namespace='social')),
     url(r'', include('quora.urls', namespace='quora')),
 ]
