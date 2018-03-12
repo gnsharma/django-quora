@@ -1,0 +1,21 @@
+{% extends 'quora/common/base.haml' %}
+
+{% block content %}
+%nav
+  .nav-wrapper
+    %a.brand-logo.right{:href => "{% url 'quora:home' %}" }Quora 
+    %ul#nav-mobile.left.hide-on-med-and-down
+      %li
+        %a{:href => "{% url 'quora:home' %}" } Home
+      %li
+        %a{:href => "{% url 'quora:logout' %}" } Logout
+
+%ul
+  %li
+    {{ question.question_text }}
+  {% for answer in question.answer_set.all %}
+    %li {{ answer.answer_text }} -- {{ answer.votes }} vote{{ answer.votes|pluralize }}
+  {% endfor %} 
+
+{% endblock %}
+

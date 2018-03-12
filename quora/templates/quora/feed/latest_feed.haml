@@ -1,0 +1,26 @@
+{% extends 'quora/common/base.haml' %}
+
+{% block content %}
+%nav
+  .nav-wrapper
+    %a.brand-logo.right{:href => "{% url 'quora:home' %}" }Quora 
+    %ul#nav-mobile.left.hide-on-med-and-down
+      %li
+        %a{:href => "{% url 'quora:home' %}" } Home
+      %li
+        %a{:href => "{% url 'quora:logout' %}" } Logout
+{% if questions %}
+%ul
+  {% for question in questions %}
+  %li
+    %a{:href => "{% url 'quora:question' question.id %}" } {{ question.question_text }}
+    {% for answer in question.answer_set.all %}
+    %li {{ answer.answer_text }} -- {{ answer.votes }} vote{{ answer.votes|pluralize }}
+    {% endfor %} 
+  {% endfor %}
+
+{% else %}
+%p There are currently no new questions.
+{% endif %}
+
+{% endblock %}
