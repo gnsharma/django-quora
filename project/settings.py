@@ -141,9 +141,9 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = "static/"
 
-LOGIN_URL = 'login'
-LOGOUT_URL = 'logout'
-LOGIN_REDIRECT_URL = 'home'
+LOGIN_URL = 'quora:login'
+LOGOUT_URL = 'quora:logout'
+LOGIN_REDIRECT_URL = 'quora:home'
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY ='96089737359-n0h92frc7nanns74ms3eal31tphevmh5.apps.googleusercontent.com'  
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'lIIIVyK4xsD21kcqxIJH_aRq' 

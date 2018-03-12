@@ -38,7 +38,7 @@ class HomeView(View):
 
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            return render(request, 'quora/feed/feed.haml', {})
+            return HttpResponseRedirect(reverse('quora:feed')) 
         else:
             form = LoginForm()
             return render(request, 'quora/common/home.haml', {'form': form})
@@ -50,7 +50,7 @@ class HomeView(View):
             if user is not None:
                 if user.is_active:
                     login(request, user)
-                    return render(request, 'quora/feed/feed.haml', {})
+                    return HttpResponseRedirect(reverse('quora:feed')) 
                 else:
                     return HttpResponse('Your account is disabled.')
 
