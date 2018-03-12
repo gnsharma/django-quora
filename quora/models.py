@@ -16,8 +16,8 @@ class Question(models.Model):
     question_text = models.CharField(max_length=256)
     pub_date = models.DateTimeField('date published', default=timezone.now)
 
-    questioner = models.ForeignKey(User, on_delete=models.CASCADE)
-    
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
     def __str__(self):
         return self.question_text
 
@@ -28,15 +28,17 @@ class Question(models.Model):
     was_published_recently.boolean = True
     was_published_recently.shor_description = 'Published recently?'
 
+
 class Answer(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     answer_text = models.CharField(max_length=200)
     votes = models.IntegerField(default=0)
 
-    answerer = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.answer_text
+
 
 class Topic(models.Model):
     topic_text = models.CharField(max_length=256)

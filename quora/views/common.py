@@ -28,7 +28,7 @@ class SignupView(View):
             user.email = form.cleaned_data['email']
             user.save()
             profile = Profile(user=user)
-            profile .save()
+            profile.save()
             return HttpResponseRedirect(reverse('quora:login'))
         else:
             return render(request, 'quora/common/signup.haml', {'form': form})
@@ -38,11 +38,11 @@ class HomeView(View):
 
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            return HttpResponseRedirect(reverse('quora:feed')) 
+            return HttpResponseRedirect(reverse('quora:feed'))
         else:
             form = LoginForm()
             return render(request, 'quora/common/home.haml', {'form': form})
-        
+
     def post(self, request, *args, **kwargs):
         form = LoginForm(request.POST)
         if form.is_valid():
@@ -50,7 +50,7 @@ class HomeView(View):
             if user is not None:
                 if user.is_active:
                     login(request, user)
-                    return HttpResponseRedirect(reverse('quora:feed')) 
+                    return HttpResponseRedirect(reverse('quora:feed'))
                 else:
                     return HttpResponse('Your account is disabled.')
 

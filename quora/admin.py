@@ -18,6 +18,7 @@ class QuestionAdmin(admin.ModelAdmin):
     list_filter = ['pub_date']
     search_fields = ['question_text']
 
+
 class QuestionInline(admin.TabularInline):
     model = Question
     extra = 1
@@ -26,10 +27,10 @@ class QuestionInline(admin.TabularInline):
 class TopicAdmin(admin.ModelAdmin):
     fields = ['topic_text', 'questions']
     inline = [QuestionInline]
-    list_display = ('topic_text',) 
+    list_display = ('topic_text',)
     list_filter = ['topic_text']
     search_fields = ['topic_text']
 
+
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(Topic, TopicAdmin)
-

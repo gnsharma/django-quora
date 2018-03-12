@@ -69,7 +69,7 @@ TEMPLATES = [
                 'social_django.context_processors.backends',
                 'social_django.context_processors.login_redirect',
             ],
- 	    'loaders': (
+            'loaders': (
                 'hamlpy.template.loaders.HamlPyFilesystemLoader',
                 'hamlpy.template.loaders.HamlPyAppDirectoriesLoader',
             ),
@@ -85,12 +85,12 @@ WSGI_APPLICATION = 'project.wsgi.application'
 
 DATABASES = {
     'default': {
-    	'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.mysql',
         'NAME': 'quora',
         'USER': 'root',
         'PASSWORD': '',
         'HOST': 'localhost',
-        'PORT': '3306',    
+        'PORT': '3306',
     }
 }
 
@@ -117,7 +117,7 @@ AUTHENTICATION_BACKENDS = (
     'social_core.backends.open_id.OpenIdAuth',  # for Google authentication
     'social_core.backends.google.GoogleOpenId',  # for Google authentication
     'social_core.backends.google.GoogleOAuth2',  # for Google authentication
-     
+
     'django.contrib.auth.backends.ModelBackend',
 )
 
@@ -145,10 +145,5 @@ LOGIN_URL = 'quora:login'
 LOGOUT_URL = 'quora:logout'
 LOGIN_REDIRECT_URL = 'quora:home'
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY ='96089737359-n0h92frc7nanns74ms3eal31tphevmh5.apps.googleusercontent.com'  
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'lIIIVyK4xsD21kcqxIJH_aRq' 
-
-
-
-
-
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '96089737359-n0h92frc7nanns74ms3eal31tphevmh5.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'lIIIVyK4xsD21kcqxIJH_aRq'

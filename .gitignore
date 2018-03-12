@@ -12,3 +12,6 @@ __pycache__/
 # Project static files
 static
 .coverage
+
+# Vim swap files
+.swp
