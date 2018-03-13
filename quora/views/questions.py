@@ -24,7 +24,7 @@ class FeedView(LoginRequiredMixin, View):
 class QuestionView(View):
 
     def get(self, request, *args, **kwargs):
-        question = Question.objects.get(pk=kwargs['id'])
+        question = Question.objects.get(pk=request.GET.get('id'))
         return render(request, 'quora/feed/question.haml', {'question': question})
 
 

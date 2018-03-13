@@ -1,5 +1,5 @@
 from django.forms import EmailField, CharField, Form
-from django.forms import PasswordInput
+from django.forms import Textarea, PasswordInput
 
 
 class SignupForm(Form):
@@ -22,4 +22,4 @@ class LoginForm(Form):
 
 class AnswerForm(Form):
 
-    answer = CharField(label='Answer')
+    answer = CharField(label='Answer', widget=Textarea)

@@ -1,18 +1,12 @@
 {% extends 'quora/common/base.haml' %}
 
 {% block content %}
-%nav
-  .nav-wrapper
-    %a.brand-logo.left{:href => "{% url 'quora:home' %}" } Quora 
-    %ul#nav-mobile.right.hide-on-med-and-down
-      %li
-        %a{:href => "{% url 'quora:home' %}" } Home
-      %li
-        %a{:href => "{% url 'quora:logout' %}" } Logout
+
+{% include 'quora/feed/navbar.haml' %}
 
 .row
   .col.s9
-    .section.horizontal
+    .section
       %h5 {{ question.question_text }}
     .divider
     .section.center
@@ -20,7 +14,7 @@
       %p
         %strong {{request.user.username|capfirst}}, can you answer this question?
       %p People are searching for a better answer to this question
-      %a.btn.indigo.blue-text.lighten-5{:href => "{% url 'quora:home' %}" } 
+      %a.btn.indigo.blue-text.lighten-5{:href => "{% url 'quora:answer' question.id %}" } 
         %i.material-icons create
         Answer
     %h6 

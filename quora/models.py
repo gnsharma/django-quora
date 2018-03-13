@@ -44,7 +44,7 @@ class Answer(models.Model):
 class Topic(models.Model):
     topic_text = models.CharField(max_length=256)
 
-    questions = models.ManyToManyField(Question)
+    questions = models.ManyToManyField(Question, blank=True)
 
     def __str__(self):
         return self.topic_text

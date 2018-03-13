@@ -1,0 +1,36 @@
+{% extends 'quora/common/base.haml' %}
+
+{% block content %}
+
+{% include 'quora/feed/navbar.haml' %}
+
+.row
+  .col.s9
+    .section
+      %h5 {{ question.question_text }}
+    .divider
+      
+    .section      
+      {% if form.non_field_errors %}
+      .alert.alert-danger.alert-dismissible.fade.show{:role => "alert"}
+        {% for error in form.non_field_errors %}
+        %p {{ error }}
+        {% endfor %}
+        %button.close{:type => "button", :data-dismiss => "alert", :area-label => "Close" }
+        %span{:aria-hidden => "true"}&times;
+      {% endif %}
+
+      %form{:action => "{% url 'quora:answer' question.id %}", :method => "post"}
+        {% csrf_token %}
+        {% for field in form %}
+        .materialze-textarea
+          {{ field.errors }}
+          {{ field.label_tag }} {{ field }}
+          {% if field.help_text %}
+          %p.help {{ field.help_text|safe }}
+          {% endif %}
+        {% endfor %}
+        %button.btn.blue.darken-3{:type => "submit"}Submit
+
+{% endblock %}
+

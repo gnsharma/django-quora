@@ -1,0 +1,9 @@
+%nav
+  .nav-wrapper
+    %a.brand-logo.left{:href => "{% url 'quora:home' %}" } Quora
+    %ul#nav-mobile.right.hide-on-med-and-down
+      %li
+        %a{:href => "{% url 'quora:home' %}" } Home
+      %li
+        %a{:href => "{% url 'quora:logout' %}" } Logout
+        

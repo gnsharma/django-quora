@@ -10,13 +10,27 @@ from django.contrib import messages
 from django.utils import timezone
 
 from quora.models import Profile, Question, Answer, Topic
-
+from quora.forms import AnswerForm
 
 class AddAnswerView(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
         question = Question.objects.get(pk=kwargs['id'])
-        return render(request, 'quora/feed/answer.haml', {})
+        form = AnswerForm()
+        return render(request, 'quora/feed/answer.haml', {'question': question, 'form': form})
+
+    def post(self, request, *args, **kwargs):
+        question = Question.objects.get(pk=kwargs['id'])
+        form = AnswerForm(request.POST)
+        if form.is_valid():
+            answer = Answer()
+            answer.answer_text = form.cleaned_data['answer']
+            answer.question = Question.objects.get(pk=kwargs['id'])
+            answer.user = request.user
+            answer.save()
+            return HttpResponseRedirect(reverse('quora:question') + "?id=" + kwargs['id'])
+        else:
+            return render(request, 'quora/feed/answer.haml', {'question': question, 'form': form})
 
 
 class AnswerVotesView(LoginRequiredMixin, View):

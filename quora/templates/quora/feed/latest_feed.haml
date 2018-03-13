@@ -1,14 +1,8 @@
 {% extends 'quora/common/base.haml' %}
 
 {% block content %}
-%nav
-  .nav-wrapper
-    %a.brand-logo.left{:href => "{% url 'quora:home' %}" } Quora 
-    %ul#nav-mobile.right.hide-on-med-and-down
-      %li
-        %a{:href => "{% url 'quora:home' %}" } Home
-      %li
-        %a{:href => "{% url 'quora:logout' %}" } Logout
+
+{% include 'quora/feed/navbar.haml' %}
 
 .row
   .col.s3
@@ -23,11 +17,11 @@
     .card
       .card-content
         %span.card-title
-          %a{:href => "{% url 'quora:question' question.id %}" } {{ question.question_text }}
+          %a{:href => "{% url 'quora:question' %}?id={{ question.id | urlencode }}" } {{ question.question_text }}
       .card-action
         %a.btn.small.indigo.lighten-5.blue-text{:id => "upvote_{{ question.id }}" } Upvote | {{ question.votes }}
         %a.btn-flat.grey-text.lighten-2{:id => "downvote_{{ question.id }}" } Downvote
-        %a.right.btn.indigo.blue-text.lighten-5{:href => "{% url 'quora:home' %}" } 
+        %a.right.btn.indigo.blue-text.lighten-5{:href => "{% url 'quora:answer' question.id %}" } 
           %i.material-icons create
           Answer
     {% endfor %}
@@ -81,12 +75,5 @@
       });
     });
   });  
-
-
-
-
-
-
-
 
 {% endblock %}
