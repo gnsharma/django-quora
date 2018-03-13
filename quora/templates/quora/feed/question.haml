@@ -3,7 +3,7 @@
 {% block content %}
 %nav
   .nav-wrapper
-    %a.brand-logo.left{:href => "{% url 'quora:home' %}" }Quora 
+    %a.brand-logo.left{:href => "{% url 'quora:home' %}" } Quora 
     %ul#nav-mobile.right.hide-on-med-and-down
       %li
         %a{:href => "{% url 'quora:home' %}" } Home
@@ -33,10 +33,55 @@
         {{answer.user.username}}
       %p
         {{ answer.answer_text }}
-      %a.btn.small.indigo.lighten-5.blue-text{:href => "{% url 'quora:home' %}" } Upvote | {{ answer.votes }}
-      %a.btn-flat.grey-text.lighten-2{:href => "{% url 'quora:home' %}"} Downvote
+      %a.btn.small.indigo.lighten-5.blue-text{:id => "upvote_{{ answer.id }}" } Upvote | {{ answer.votes }}
+      %a.btn-flat.grey-text.lighten-2{:id => "downvote_{{ answer.id }}"} Downvote
     .divider
     {% endfor %} 
 
 {% endblock %}
 
+{% block script %}
+
+%script
+  $(document).ready(function() {
+    $("a[id^='upvote_']").click(function() {
+      
+      var id = parseInt(this.id.replace("upvote_", ""), 10);
+      var vote_type = 'up';
+      
+      $.ajax( { 
+        type: 'POST', 
+        url: '/vote/answer/', 
+        data: { 'csrfmiddlewaretoken': csrftoken, id: id, type: vote_type}, 
+        success: function(response) {
+          if (Number.isInteger(parseInt(response))) {
+            $("a#upvote_" + id).text('Upvote | ' + response);
+            Materialize.toast('Answer upvoted', 2000);
+          }
+        } 
+      });
+      return false;
+    });
+  });  
+  
+  $(document).ready(function() {
+    $("a[id^='downvote_']").click(function() {
+          
+      var id = parseInt(this.id.replace("downvote_", ""), 10);
+      var vote_type = 'down';
+        
+      $.ajax( {
+        type: 'POST',
+        url: '/vote/answer/', 
+        data: { 'csrfmiddlewaretoken': csrftoken, id: id, type: vote_type}, 
+        success: function(response) {
+          if (Number.isInteger(parseInt(response))) {
+            $("a#upvote_" + id).text('Upvote | ' + response);
+            Materialize.toast('Answer downvoted', 2000);
+          }
+        }
+      });
+    });
+  });  
+
+{% endblock %}

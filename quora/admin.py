@@ -10,11 +10,11 @@ class AnswerInline(admin.TabularInline):
 
 class QuestionAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None, {'fields': ['question_text', 'questioner']}),
+        (None, {'fields': ['question_text', 'user', 'votes']}),
         ('Date information', {'fields': ['pub_date']}),
     ]
     inlines = [AnswerInline]
-    list_display = ('question_text', 'pub_date', 'was_published_recently')
+    list_display = ('question_text', 'pub_date', 'votes', 'user', 'was_published_recently')
     list_filter = ['pub_date']
     search_fields = ['question_text']
 

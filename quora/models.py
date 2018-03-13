@@ -15,6 +15,7 @@ class Profile(models.Model):
 class Question(models.Model):
     question_text = models.CharField(max_length=256)
     pub_date = models.DateTimeField('date published', default=timezone.now)
+    votes = models.IntegerField(default=0)
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 

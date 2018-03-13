@@ -26,3 +26,35 @@ class QuestionView(View):
     def get(self, request, *args, **kwargs):
         question = Question.objects.get(pk=kwargs['id'])
         return render(request, 'quora/feed/question.haml', {'question': question})
+
+
+class QuestionVotesView(LoginRequiredMixin, View):
+
+    def post(self, request, *args, **kwargs):
+        question_id = int(request.POST.get('id'))
+        vote_type = request.POST.get('type')
+
+        question = Question.objects.get(pk=question_id)
+
+        if (vote_type == 'up'):
+            question.votes += 1
+            question.save()
+        elif (vote_type == 'down'):
+            question.votes -= 1
+            question.save()
+        else:
+            return HttpResponse('Error - bad action')
+
+        return HttpResponse(question.votes)
+
+
+
+
+
+
+
+
+
+
+
+

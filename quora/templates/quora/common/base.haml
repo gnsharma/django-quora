@@ -16,6 +16,23 @@
     <!--Import jQuery before materialize.js-->
     %script{:type => "text/javascript", :src => "https://code.jquery.com/jquery-3.2.1.min.js"}
     %script{:type => "text/javascript", :src => "https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.js"}
+    
+    %script
+      function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie != '') {
+          var cookies = document.cookie.split(';');
+          for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+              break;
+            }
+          }
+        }
+        return cookieValue;
+      }
+      var csrftoken = getCookie('csrftoken');
 
   %body
     .container
