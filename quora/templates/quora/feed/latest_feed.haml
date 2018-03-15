@@ -1,16 +1,13 @@
 {% extends 'quora/common/base.haml' %}
 
+{% load filter_votes %}
+
 {% block content %}
 
 {% include 'quora/feed/navbar.haml' %}
 
 .row
-  .col.s3
-    %p
-      Feeds
-    .divider  
-    %p
-      Latest Questions
+  {% include 'quora/feed/sidebar.haml' %}
   .col.s9
     {% if questions %}
     {% for question in questions %}
@@ -19,61 +16,32 @@
         %span.card-title
           %a{:href => "{% url 'quora:question' %}?id={{ question.id | urlencode }}" } {{ question.question_text }}
       .card-action
-        %a.btn.small.indigo.lighten-5.blue-text{:id => "upvote_{{ question.id }}" } Upvote | {{ question.votes }}
-        %a.btn-flat.grey-text.lighten-2{:id => "downvote_{{ question.id }}" } Downvote
-        %a.right.btn.indigo.blue-text.lighten-5{:href => "{% url 'quora:answer' question.id %}" } 
+
+        {% filter_votes question.questionvotes_set request.user vote user as votes %}
+        {% if votes.vote_obj == None or votes.vote_obj.vote == 0 %}
+        %a.btn.small.indigo.lighten-5.blue-text{:id => "upvote_{{ question.id }}" } Upvote | {{ votes.up_count }} 
+        %a.btn.small.z-depth-1.grey.lighten-5.grey-text{:id => "downvote_{{ question.id }}" } Downvote | {{ votes.down_count }}
+        {% elif votes.vote_obj.vote == 1 %}
+        %a.btn.small.grey.lighten-3.grey-text{:id => "upvote_{{ question.id }}" } Upvoted | {{ votes.up_count }}
+        %a.btn.small.z-depth-1.grey.lighten-5.grey-text{:id => "downvote_{{ question.id }}" } Downvote | {{ votes.count }}
+        {% elif votes.vote_obj.vote == -1 %}
+        %a.btn.small.indigo.lighten-5.blue-text{:id => "upvote_{{ question.id }}" } Upvote | {{ votes.up_count }}
+        %a.btn.small.z-depth-1.grey.lighten-3.grey-text{:id => "downvote_{{ question.id }}" } Downvoted | {{ votes.down_count }}
+        {% endif %}
+        
+        %a.right.btn.indigo.blue-text.lighten-5{:href => "{% url 'quora:add-answer' %}?qid={{ question.id | urlencode }}" } 
           %i.material-icons create
           Answer
     {% endfor %}
 
     {% else %}
-    %p There are currently no new questions.
+    %p There are currently no questions on this topic.
     {% endif %}
 
 {% endblock %}
 
 {% block script %}
 
-%script
-  $(document).ready(function() {
-    $("a[id^='upvote_']").click(function() {
-      
-      var id = parseInt(this.id.replace("upvote_", ""), 10);
-      var vote_type = 'up';
-      
-      $.ajax( { 
-        type: 'POST', 
-        url: '/vote/question/', 
-        data: { 'csrfmiddlewaretoken': csrftoken, id: id, type: vote_type}, 
-        success: function(response) {
-          if (Number.isInteger(parseInt(response))) {
-            $("a#upvote_" + id).text('Upvote | ' + response);
-            Materialize.toast('Question upvoted', 2000);
-          }
-        } 
-      });
-      return false;
-    });
-  });  
-  
-  $(document).ready(function() {
-    $("a[id^='downvote_']").click(function() {
-          
-      var id = parseInt(this.id.replace("downvote_", ""), 10);
-      var vote_type = 'down';
-        
-      $.ajax( {
-        type: 'POST',
-        url: '/vote/question/', 
-        data: { 'csrfmiddlewaretoken': csrftoken, id: id, type: vote_type}, 
-        success: function(response) {
-          if (Number.isInteger(parseInt(response))) {
-            $("a#upvote_" + id).text('Upvote | ' + response);
-            Materialize.toast('Question downvoted', 2000);
-          }
-        }
-      });
-    });
-  });  
+{% include 'quora/feed/voting.haml' with url='/vote/question' %}
 
 {% endblock %}

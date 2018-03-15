@@ -5,9 +5,9 @@
 {% include 'quora/feed/navbar.haml' %}
 
 .row
+  {% include 'quora/feed/sidebar.haml' %}
   .col.s9
     .section
-      %h5 {{ question.question_text }}
     .divider
       
     .section      
@@ -20,7 +20,7 @@
         %span{:aria-hidden => "true"}&times;
       {% endif %}
 
-      %form{:action => "{% url 'quora:answer' question.id %}", :method => "post"}
+      %form{:action => "{% url 'quora:add-question' %}", :method => "post"}
         {% csrf_token %}
         {% for field in form %}
         .materialze-textarea
@@ -33,4 +33,3 @@
         %button.btn.blue.darken-3{:type => "submit"}Submit
 
 {% endblock %}
-

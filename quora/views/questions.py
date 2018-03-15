@@ -1,4 +1,5 @@
 import datetime
+import json
 
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
@@ -8,24 +9,57 @@ from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.utils import timezone
+from django.core.exceptions import ObjectDoesNotExist
 
-from quora.models import Profile, Question, Answer, Topic
-from quora.forms import SignupForm, LoginForm
+from quora.models import Profile, Question, Answer, Topic, QuestionVotes
+from quora.forms import SignupForm, LoginForm, QuestionForm
 
 
 class FeedView(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
-        latest_questions_list = Question.objects.filter(pub_date__lte=timezone.now()).filter(
-            pub_date__gte=timezone.now() - datetime.timedelta(days=1)).order_by('-pub_date')
-        return render(request, 'quora/feed/latest_feed.haml', {'questions': latest_questions_list})
+        topic = request.GET.get('topic')
+        topics = Topic.objects.all()
+
+        if topic is None:
+            latest_questions_list = Question.objects.filter(pub_date__lte=timezone.now()).filter(
+                pub_date__gte=timezone.now() - datetime.timedelta(days=1)).order_by('-pub_date')
+            return render(request, 'quora/feed/latest_feed.haml',
+                          {'questions': latest_questions_list, 'topics': topics})
+        else:
+            questions = Question.objects.filter(topics__topic_text=topic)
+            return render(request, 'quora/feed/latest_feed.haml', {'questions': questions, 'topics': topics})
 
 
 class QuestionView(View):
 
     def get(self, request, *args, **kwargs):
+        topics = Topic.objects.all()
         question = Question.objects.get(pk=request.GET.get('id'))
-        return render(request, 'quora/feed/question.haml', {'question': question})
+        return render(request, 'quora/feed/question.haml', {'topics': topics, 'question': question})
+
+
+class AddQuestionView(LoginRequiredMixin, View):
+
+    def get(self, request, *args, **kwargs):
+        topics = Topic.objects.all()
+        form = QuestionForm()
+        return render(request, 'quora/feed/add_question.haml', {'topics': topics, 'form': form})
+
+    def post(self, request, *args, **kwargs):
+        topics = Topic.objects.all()
+        form = QuestionForm(request.POST)
+        if form.is_valid():
+            question = Question()
+            question.question_text = form.cleaned_data['question']
+            question.user = request.user
+            topic = Topic.objects.get(topic_text=form.cleaned_data['topics'])
+            question.save()
+            question.topics.add(topic)
+            question.save()
+            return HttpResponseRedirect(reverse('quora:feed'))
+        else:
+            return render(request, 'quora/feed/add_question.haml', {'topics': topics, 'form': form})
 
 
 class QuestionVotesView(LoginRequiredMixin, View):
@@ -34,27 +68,35 @@ class QuestionVotesView(LoginRequiredMixin, View):
         question_id = int(request.POST.get('id'))
         vote_type = request.POST.get('type')
 
-        question = Question.objects.get(pk=question_id)
+        try:
+            vote = QuestionVotes.objects.get(question__id=question_id, user=request.user)
+        except ObjectDoesNotExist:
+            vote = QuestionVotes()
+            vote.question = Question.objects.get(pk=question_id)
+            vote.user = request.user
+            vote.save()
+        finally:
+            current_vote = vote.vote
+            if (vote_type == 'up'):
+                if (current_vote == 0):
+                    vote.vote = 1
+                if (current_vote == 1):
+                    vote.vote = 0
+                if (current_vote == -1):
+                    vote.vote = 1
+            elif (vote_type == 'down'):
+                if (current_vote == 0):
+                    vote.vote = -1
+                if (current_vote == 1):
+                    vote.vote = 0
+                if (current_vote == -1):
+                    vote.vote = 0
+            else:
+                return HttpResponse('Error - bad action')
 
-        if (vote_type == 'up'):
-            question.votes += 1
-            question.save()
-        elif (vote_type == 'down'):
-            question.votes -= 1
-            question.save()
-        else:
-            return HttpResponse('Error - bad action')
-
-        return HttpResponse(question.votes)
-
-
-
-
-
-
-
-
-
-
-
-
+            vote.save()
+            up_count = QuestionVotes.objects.filter(question__id=question_id, vote=1).count()
+            down_count = QuestionVotes.objects.filter(question__id=question_id, vote=-1).count()
+            total = up_count - down_count
+            return HttpResponse(json.dumps({'vote': vote.vote, 'total': total,
+                                            'up_count': up_count, 'down_count': down_count}))

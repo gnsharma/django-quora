@@ -1,5 +1,7 @@
-from django.forms import EmailField, CharField, Form
-from django.forms import Textarea, PasswordInput
+from django.forms import ModelChoiceField, ModelMultipleChoiceField, EmailField, CharField, Form
+from django.forms import ModelForm, Textarea, PasswordInput
+
+from quora.models import Topic
 
 
 class SignupForm(Form):
@@ -23,3 +25,10 @@ class LoginForm(Form):
 class AnswerForm(Form):
 
     answer = CharField(label='Answer', widget=Textarea)
+
+
+class QuestionForm(Form):
+
+    question = CharField(label='Ask your question')
+    #topics = ModelMultipleChoiceField(queryset=Topic.objects.all())
+    topics = CharField(label='Topics')

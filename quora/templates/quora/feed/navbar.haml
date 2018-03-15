@@ -1,9 +1,14 @@
 %nav
-  .nav-wrapper
+  .nav-wrapper.red.darken-2
     %a.brand-logo.left{:href => "{% url 'quora:home' %}" } Quora
     %ul#nav-mobile.right.hide-on-med-and-down
       %li
         %a{:href => "{% url 'quora:home' %}" } Home
       %li
+        %a{:href => "{% url 'quora:add-question' %}"} Ask
+      %li
+        {% if request.user.is_authenticated %}
         %a{:href => "{% url 'quora:logout' %}" } Logout
-        
+        {% else %}
+        %a{:href => "{% url 'quora:home' %}" } Login
+        {% endif %}

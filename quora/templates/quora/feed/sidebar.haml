@@ -1,0 +1,10 @@
+.col.s3
+  %p
+    Feeds
+  .divider
+  %p
+    %a{:href => "{% url 'quora:feed' %}" } Latest 
+  {% for topic in topics %}
+  %p
+    %a{:href => "{% url 'quora:feed' %}?topic={{ topic.topic_text | urlencode }}" } {{ topic.topic_text }}
+  {% endfor %}
