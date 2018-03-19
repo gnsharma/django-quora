@@ -3,6 +3,7 @@ from django.conf.urls import url
 from quora.views.common import HomeView, SignupView, LogoutView
 from quora.views.questions import FeedView, AddQuestionView, QuestionView, QuestionVotesView
 from quora.views.answers import AddAnswerView, AnswerVotesView
+from quora.views.topics import AddTopicView
 
 app_name = 'quora'
 urlpatterns = [
@@ -16,5 +17,6 @@ urlpatterns = [
     url(r'^vote/answer$', AnswerVotesView.as_view(), name='answer-vote'),
     url(r'^add/answers$', AddAnswerView.as_view(), name='add-answer'),
     url(r'^add/questions$', AddQuestionView.as_view(), name='add-question'),
+    url(r'^add/topics$', AddTopicView.as_view(), name='add-topic'),
     url(r'', HomeView.as_view(), name='home'),
 ]
