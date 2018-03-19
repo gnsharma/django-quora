@@ -18,13 +18,13 @@
       .card-action
 
         {% filter_votes question.questionvotes_set request.user as votes %}
-        {% if votes.vote_obj == None or votes.vote_obj.vote == 0 %}
+        {% if votes.vote_obj == None or votes.vote_obj.value == 0 %}
         %a.btn.small.indigo.lighten-5.blue-text{:id => "upvote_{{ question.id }}" } Upvote | {{ votes.up_count }} 
         %a.btn.small.z-depth-1.grey.lighten-5.grey-text{:id => "downvote_{{ question.id }}" } Downvote | {{ votes.down_count }}
-        {% elif votes.vote_obj.vote == 1 %}
+        {% elif votes.vote_obj.value == 1 %}
         %a.btn.small.grey.lighten-3.grey-text{:id => "upvote_{{ question.id }}" } Upvoted | {{ votes.up_count }}
         %a.btn.small.z-depth-1.grey.lighten-5.grey-text{:id => "downvote_{{ question.id }}" } Downvote | {{ votes.count }}
-        {% elif votes.vote_obj.vote == -1 %}
+        {% elif votes.vote_obj.value == -1 %}
         %a.btn.small.indigo.lighten-5.blue-text{:id => "upvote_{{ question.id }}" } Upvote | {{ votes.up_count }}
         %a.btn.small.z-depth-1.grey.lighten-3.grey-text{:id => "downvote_{{ question.id }}" } Downvoted | {{ votes.down_count }}
         {% endif %}

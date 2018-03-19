@@ -13,6 +13,7 @@ from django.core.exceptions import ObjectDoesNotExist
 
 from quora.models import Profile, Question, Answer, Topic, QuestionVotes
 from quora.forms import SignupForm, LoginForm, QuestionForm
+from quora.views.answers import voting_logic
 
 
 class FeedView(LoginRequiredMixin, View):
@@ -76,27 +77,11 @@ class QuestionVotesView(LoginRequiredMixin, View):
             vote.user = request.user
             vote.save()
         finally:
-            current_vote = vote.vote
-            if (vote_type == 'up'):
-                if (current_vote == 0):
-                    vote.vote = 1
-                if (current_vote == 1):
-                    vote.vote = 0
-                if (current_vote == -1):
-                    vote.vote = 1
-            elif (vote_type == 'down'):
-                if (current_vote == 0):
-                    vote.vote = -1
-                if (current_vote == 1):
-                    vote.vote = 0
-                if (current_vote == -1):
-                    vote.vote = 0
-            else:
-                return HttpResponse('Error - bad action')
+            voting_logic(vote_type, vote)
 
             vote.save()
-            up_count = QuestionVotes.objects.filter(question__id=question_id, vote=1).count()
-            down_count = QuestionVotes.objects.filter(question__id=question_id, vote=-1).count()
+            up_count = QuestionVotes.objects.filter(question__id=question_id, value=1).count()
+            down_count = QuestionVotes.objects.filter(question__id=question_id, value=-1).count()
             total = up_count - down_count
-            return HttpResponse(json.dumps({'vote': vote.vote, 'total': total,
+            return HttpResponse(json.dumps({'vote': vote.value, 'total': total,
                                             'up_count': up_count, 'down_count': down_count}))

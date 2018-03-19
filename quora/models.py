@@ -51,10 +51,10 @@ class Answer(models.Model):
 class QuestionVotes(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    vote = models.IntegerField(default=0)
+    value = models.IntegerField(default=0)
 
 
 class AnswerVotes(models.Model):
     answer = models.ForeignKey(Answer, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    vote = models.IntegerField(default=0)
+    value = models.IntegerField(default=0)

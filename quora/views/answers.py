@@ -15,6 +15,26 @@ from quora.models import Profile, Question, Answer, Topic, AnswerVotes
 from quora.forms import AnswerForm
 
 
+def voting_logic(vote_type, vote):
+    current_vote = vote.value
+    if (vote_type == 'up'):
+        if (current_vote == 0):
+            vote.value = 1
+        if (current_vote == 1):
+            vote.value = 0
+        if (current_vote == -1):
+            vote.value = 1
+    elif (vote_type == 'down'):
+        if (current_vote == 0):
+            vote.value = -1
+        if (current_vote == 1):
+            vote.value = 0
+        if (current_vote == -1):
+            vote.value = 0
+    else:
+        return HttpResponse('Error - bad action')
+
+
 class AddAnswerView(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
@@ -53,27 +73,11 @@ class AnswerVotesView(LoginRequiredMixin, View):
             vote.user = request.user
             vote.save()
         finally:
-            current_vote = vote.vote
-            if (vote_type == 'up'):
-                if (current_vote == 0):
-                    vote.vote = 1
-                if (current_vote == 1):
-                    vote.vote = 0
-                if (current_vote == -1):
-                    vote.vote = 1
-            elif (vote_type == 'down'):
-                if (current_vote == 0):
-                    vote.vote = -1
-                if (current_vote == 1):
-                    vote.vote = 0
-                if (current_vote == -1):
-                    vote.vote = 0
-            else:
-                return HttpResponse('Error - bad action')
+            voting_logic(vote_type, vote)
 
             vote.save()
-            up_count = AnswerVotes.objects.filter(answer__id=answer_id, vote=1).count()
-            down_count = AnswerVotes.objects.filter(answer__id=answer_id, vote=-1).count()
+            up_count = AnswerVotes.objects.filter(answer__id=answer_id, value=1).count()
+            down_count = AnswerVotes.objects.filter(answer__id=answer_id, value=-1).count()
             total = up_count - down_count
-            return HttpResponse(json.dumps({'vote': vote.vote, 'total': total,
+            return HttpResponse(json.dumps({'vote': vote.value, 'total': total,
                                             'up_count': up_count, 'down_count': down_count}))
