@@ -2,9 +2,7 @@
   $(document).ready(function() {
 
     function voting(response, id) {
-      console.log(response);
       var response = JSON.parse(response);
-      console.log(response);
       if (response.vote == 0) {
         $("a#upvote_" + id).text('Upvote | ' + response.up_count);
         $("a#downvote_" + id).text('Downvote | ' + response.down_count);
