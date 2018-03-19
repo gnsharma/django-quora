@@ -38,13 +38,11 @@ def voting_logic(vote_type, vote):
 class AddAnswerView(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
-        topics = Topic.objects.all()
         question = Question.objects.get(pk=kwargs['qid'])
         form = AnswerForm()
-        return render(request, 'quora/feed/add_answer.haml', {'topics': topics, 'question': question, 'form': form})
+        return render(request, 'quora/feed/add_answer.haml', {'question': question, 'form': form})
 
     def post(self, request, *args, **kwargs):
-        topics = Topic.objects.all()
         question = Question.objects.get(pk=kwargs['qid'])
         form = AnswerForm(request.POST)
         if form.is_valid():
@@ -56,7 +54,7 @@ class AddAnswerView(LoginRequiredMixin, View):
             return HttpResponseRedirect(reverse('quora:question') + "?id=" + kwargs['qid'])
         else:
             return render(request, 'quora/feed/add_answer.haml',
-                          {'topics': topics, 'question': question, 'form': form})
+                          {'question': question, 'form': form})
 
 
 class AnswerVotesView(LoginRequiredMixin, View):

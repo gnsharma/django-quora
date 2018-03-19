@@ -18,12 +18,10 @@ from quora.forms import TopicForm
 class AddTopicView(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
-        topics = Topic.objects.all()
         form = TopicForm()
-        return render(request, 'quora/feed/add_topic.haml', {'topics': topics, 'form': form})
+        return render(request, 'quora/feed/add_topic.haml', {'form': form})
 
     def post(self, request, *args, **kwargs):
-        topics = Topic.objects.all()
         form = TopicForm(request.POST)
         if form.is_valid():
             topic = Topic()
@@ -31,5 +29,4 @@ class AddTopicView(LoginRequiredMixin, View):
             topic.save()
             return HttpResponseRedirect(reverse('quora:feed'))
         else:
-            return render(request, 'quora/feed/add_topic.haml', {'topics': topics, 'form': form})
-        return
+            return render(request, 'quora/feed/add_topic.haml', {'form': form})

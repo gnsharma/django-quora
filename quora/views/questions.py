@@ -20,35 +20,31 @@ class FeedView(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
         topic = request.GET.get('topic')
-        topics = Topic.objects.all()
 
         if topic is None:
             latest_questions_list = Question.objects.filter(pub_date__lte=timezone.now()).filter(
                 pub_date__gte=timezone.now() - datetime.timedelta(days=1)).order_by('-pub_date')
             return render(request, 'quora/feed/latest_feed.haml',
-                          {'questions': latest_questions_list, 'topics': topics})
+                          {'questions': latest_questions_list})
         else:
             questions = Question.objects.filter(topics__topic_text=topic)
-            return render(request, 'quora/feed/latest_feed.haml', {'questions': questions, 'topics': topics})
+            return render(request, 'quora/feed/latest_feed.haml', {'questions': questions})
 
 
 class QuestionView(View):
 
     def get(self, request, *args, **kwargs):
-        topics = Topic.objects.all()
         question = Question.objects.get(pk=request.GET.get('id'))
-        return render(request, 'quora/feed/question.haml', {'topics': topics, 'question': question})
+        return render(request, 'quora/feed/question.haml', {'question': question})
 
 
 class AddQuestionView(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
-        topics = Topic.objects.all()
         form = QuestionForm()
-        return render(request, 'quora/feed/add_question.haml', {'topics': topics, 'form': form})
+        return render(request, 'quora/feed/add_question.haml', {'form': form})
 
     def post(self, request, *args, **kwargs):
-        topics = Topic.objects.all()
         form = QuestionForm(request.POST)
         if form.is_valid():
             question = Question()
@@ -60,7 +56,7 @@ class AddQuestionView(LoginRequiredMixin, View):
             question.save()
             return HttpResponseRedirect(reverse('quora:feed'))
         else:
-            return render(request, 'quora/feed/add_question.haml', {'topics': topics, 'form': form})
+            return render(request, 'quora/feed/add_question.haml', {'form': form})
 
 
 class QuestionVotesView(LoginRequiredMixin, View):

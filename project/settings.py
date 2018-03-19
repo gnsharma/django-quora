@@ -68,6 +68,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'social_django.context_processors.backends',
                 'social_django.context_processors.login_redirect',
+                'quora.context_processors.topics',
             ],
             'loaders': (
                 'hamlpy.template.loaders.HamlPyFilesystemLoader',
