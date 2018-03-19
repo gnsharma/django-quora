@@ -19,21 +19,21 @@ class AddAnswerView(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
         topics = Topic.objects.all()
-        question = Question.objects.get(pk=request.GET.get('qid'))
+        question = Question.objects.get(pk=kwargs['qid'])
         form = AnswerForm()
         return render(request, 'quora/feed/add_answer.haml', {'topics': topics, 'question': question, 'form': form})
 
     def post(self, request, *args, **kwargs):
         topics = Topic.objects.all()
-        question = Question.objects.get(pk=request.POST.get('qid'))
+        question = Question.objects.get(pk=kwargs['qid'])
         form = AnswerForm(request.POST)
         if form.is_valid():
             answer = Answer()
             answer.answer_text = form.cleaned_data['answer']
-            answer.question = Question.objects.get(pk=request.POST.get('qid'))
+            answer.question = question
             answer.user = request.user
             answer.save()
-            return HttpResponseRedirect(reverse('quora:question') + "?id=" + kwargs['id'])
+            return HttpResponseRedirect(reverse('quora:question') + "?id=" + kwargs['qid'])
         else:
             return render(request, 'quora/feed/add_answer.haml',
                           {'topics': topics, 'question': question, 'form': form})

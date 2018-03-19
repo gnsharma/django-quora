@@ -17,7 +17,7 @@
       %p
         %strong {{request.user.username|capfirst}}, can you answer this question?
       %p People are searching for a better answer to this question
-      %a.btn.indigo.blue-text.lighten-5{:href => "{% url 'quora:add-answer' %}?qid= {{ question.id | urlencode }}" } 
+      %a.btn.indigo.blue-text.lighten-5{:href => "{% url 'quora:add-answer' question.id %}" } 
         %i.material-icons create
         Answer
     %h6 

@@ -29,7 +29,7 @@
         %a.btn.small.z-depth-1.grey.lighten-3.grey-text{:id => "downvote_{{ question.id }}" } Downvoted | {{ votes.down_count }}
         {% endif %}
         
-        %a.right.btn.indigo.blue-text.lighten-5{:href => "{% url 'quora:add-answer' %}?qid={{ question.id | urlencode }}" } 
+        %a.right.btn.indigo.blue-text.lighten-5{:href => "{% url 'quora:add-answer' question.id %}" } 
           %i.material-icons create
           Answer
     {% endfor %}
