@@ -25,7 +25,7 @@ class AddAnswerView(LoginRequiredMixin, View):
 
     def post(self, request, *args, **kwargs):
         topics = Topic.objects.all()
-        question = Question.objects.get(pk=request.POST.get('id'))
+        question = Question.objects.get(pk=request.POST.get('qid'))
         form = AnswerForm(request.POST)
         if form.is_valid():
             answer = Answer()
