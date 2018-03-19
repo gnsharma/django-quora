@@ -5,7 +5,7 @@ register = template.Library()
 
 
 @register.assignment_tag
-def filter_votes(model_obj, user_obj, vote, user, *args, **kwargs):
+def filter_votes(model_obj, user_obj, *args, **kwargs):
     try:
         up_count = model_obj.filter(vote=1).count()
         down_count = model_obj.filter(vote=-1).count()

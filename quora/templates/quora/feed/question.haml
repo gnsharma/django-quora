@@ -31,9 +31,9 @@
       %p
         {{ answer.answer_text }}
       
-      {% filter_votes answer.answervotes_set request.user vote user as votes %}
+      {% filter_votes answer.answervotes_set request.user as votes %}
       {% if votes.vote_obj == None or votes.vote_obj.vote == 0 %}
-      %a.btn.small.indigo.lighten-5.blue-text{:id => "upvote_{{ answer.id }}" } Upvote | {{ votes.up_count }} 
+      %a.btn.small.indigo.lighten-5.blue-text{:id => "upvote_{{ answer.id }}" } Upvote | {{ votes.up_count }}
       %a.btn.small.z-depth-1.grey.lighten-5.grey-text{:id => "downvote_{{ answer.id }}" } Downvote | {{ votes.down_count }}
       {% elif votes.vote_obj.vote == 1 %}
       %a.btn.small.grey.lighten-3.grey-text{:id => "upvote_{{ answer.id }}" } Upvoted | {{ votes.up_count }}
@@ -42,7 +42,7 @@
       %a.btn.small.indigo.lighten-5.blue-text{:id => "upvote_{{ answer.id }}" } Upvote | {{ votes.up_count }}
       %a.btn.small.z-depth-1.grey.lighten-3.grey-text{:id => "downvote_{{ answer.id }}" } Downvoted | {{ votes.down_count }}
       {% endif %}
-    
+	    
     .divider
     {% endfor %} 
 
@@ -50,6 +50,6 @@
 
 {% block script %}
 
-{% include 'quora/feed/voting.haml' with url="/vote/answer/" %}
+{% include 'quora/feed/voting.haml' with url="/vote/answer" %}
 
 {% endblock %}

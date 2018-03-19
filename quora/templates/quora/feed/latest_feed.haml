@@ -17,7 +17,7 @@
           %a{:href => "{% url 'quora:question' %}?id={{ question.id | urlencode }}" } {{ question.question_text }}
       .card-action
 
-        {% filter_votes question.questionvotes_set request.user vote user as votes %}
+        {% filter_votes question.questionvotes_set request.user as votes %}
         {% if votes.vote_obj == None or votes.vote_obj.vote == 0 %}
         %a.btn.small.indigo.lighten-5.blue-text{:id => "upvote_{{ question.id }}" } Upvote | {{ votes.up_count }} 
         %a.btn.small.z-depth-1.grey.lighten-5.grey-text{:id => "downvote_{{ question.id }}" } Downvote | {{ votes.down_count }}

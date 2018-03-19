@@ -2,6 +2,7 @@
   $(document).ready(function() {
 
     function voting(response, id) {
+      console.log(response);
       var response = JSON.parse(response);
       console.log(response);
       if (response.vote == 0) {
