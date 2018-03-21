@@ -1,6 +1,7 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
+*.DS_Store
 
 # Django stuff
 *.log
@@ -14,4 +15,10 @@ static
 .coverage
 
 # Vim swap files
-.swp
+*.swp
+
+# Coverage Reports
+*htmlcov*
+
+# Pytest Cache
+*.pytest_cache*
