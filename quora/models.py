@@ -18,21 +18,28 @@ class Topic(models.Model):
     def __str__(self):
         return self.topic_text
 
+    def is_topic_text_valid(self):
+        return self.topic_text != ''
+
 
 class Question(models.Model):
     question_text = models.CharField(max_length=256)
     pub_date = models.DateTimeField('date published', default=timezone.now)
-
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-
     topics = models.ManyToManyField(Topic, blank=True)
 
     def __str__(self):
         return self.question_text
 
+    def has_correct_date(self):
+        return self.pub_date <= timezone.now()
+
+    def is_question_text_valid(self):
+        return self.question_text != ''
+
     def was_published_recently(self):
         now = timezone.now()
-        return now - datetime.timedelta(days=1) <= self.pub_date <= now 
+        return now - datetime.timedelta(days=1) <= self.pub_date <= now
     was_published_recently.admin_order_field = 'pub_date'
     was_published_recently.boolean = True
     was_published_recently.shor_description = 'Published recently?'
@@ -41,11 +48,13 @@ class Question(models.Model):
 class Answer(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     answer_text = models.CharField(max_length=200)
-
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.answer_text
+
+    def is_answer_text_valid(self):
+        return self.answer_text != ''
 
 
 class QuestionVotes(models.Model):
@@ -53,8 +62,20 @@ class QuestionVotes(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     value = models.IntegerField(default=0)
 
+    def __str__(self):
+        return str(self.value)
+
+    def has_correct_value(self):
+        return self.value in [+1, 0, -1]
+
 
 class AnswerVotes(models.Model):
     answer = models.ForeignKey(Answer, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     value = models.IntegerField(default=0)
+
+    def __str__(self):
+        return str(self.value)
+
+    def has_correct_value(self):
+        return self.value in [+1, 0, -1]
