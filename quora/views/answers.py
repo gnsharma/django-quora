@@ -28,7 +28,7 @@ def voting_logic(vote_type, vote):
         if (current_vote == 0):
             vote.value = -1
         if (current_vote == 1):
-            vote.value = 0
+            vote.value = -1
         if (current_vote == -1):
             vote.value = 0
     else:

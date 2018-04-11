@@ -13,7 +13,7 @@ examples = (("text", "result", "comment"),
             [
                 ("topic text", True, "topic is not empty"),
                 ("", False, "empty topic"),
-            ])
+])
 
 
 @pytest.mark.django_db

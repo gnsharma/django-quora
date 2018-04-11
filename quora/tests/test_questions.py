@@ -1,12 +1,10 @@
 import datetime
 import pytest
 
-from django.contrib.auth.models import User
 from django.utils import timezone
 from django.core.exceptions import ValidationError
 
-from quora.models import validate_text, validate_date, validate_vote
-from quora.models import Profile, Question, Topic, Answer, QuestionVotes, AnswerVotes
+from quora.models import Question
 
 
 examples = (("text", "date", "result", "comment"),
@@ -16,7 +14,7 @@ examples = (("text", "date", "result", "comment"),
                 ("question text 3", timezone.now(), True, "now"),
                 ("question text 4", timezone.now(), True, "question is not empty"),
                 ("", timezone.now(), False, "empty question"),
-            ])
+])
 
 
 @pytest.mark.django_db
@@ -40,7 +38,7 @@ examples = (("text", "date", "result", "comment"),
                 ("question text", timezone.now() + datetime.timedelta(days=5), False, "future question"),
                 ("question text", timezone.now() - datetime.timedelta(days=5), False, "old question"),
                 ("question text", timezone.now() - datetime.timedelta(hours=5), True, "recent question"),
-            ])
+])
 
 
 @pytest.mark.django_db

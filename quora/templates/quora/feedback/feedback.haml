@@ -1,0 +1,29 @@
+{% extends 'quora/common/base.haml' %}
+
+{% block content %}
+
+{% include 'quora/feed/navbar.haml' %}
+
+.row
+  {% include 'quora/feed/sidebar.haml' %}
+  .col.s9
+    %form{:action => "{% url 'quora:feedback' %}", :method => "post"}
+      {% csrf_token %}
+
+      {% for field in form.visible_fields %}
+        .input-field
+          {{ field.errors }}
+          {{ field.label_tag }} {{ field }}
+          {% if field.help_text %}
+          %p.help {{ field.help_text|safe }}
+          {% endif %}
+      {% endfor %}
+
+      {% for field in form.hidden_fields %}
+        %div{"style": "display:none;"}
+          {{ field }}
+      {% endfor %}
+      %button.btn.blue.darken-3{:type => "submit"}Submit
+
+{% endblock %}
+

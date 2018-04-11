@@ -14,7 +14,7 @@ examples = (("date", "result", "comment"),
                 (timezone.now() + datetime.timedelta(days=5), False, "future date"),
                 (timezone.now() - datetime.timedelta(days=5), True, "past date"),
                 (timezone.now(), True, "now"),
-            ])
+])
 
 
 @pytest.mark.parametrize(*examples)
@@ -30,7 +30,7 @@ examples = (("text", "result", "comment"),
             [
                 ("Not empty", True, "not empty string"),
                 ("", False, "empty string"),
-            ])
+])
 
 
 @pytest.mark.parametrize(*examples)
@@ -49,7 +49,7 @@ examples = (("value", "result", "comment"),
                 (-1, True, "Should be valid"),
                 (10, False, "Should not be valid"),
                 (-10, False, "Should not be valid"),
-            ])
+])
 
 
 @pytest.mark.parametrize(*examples)
@@ -59,4 +59,3 @@ def test_validate_vote(value, result, comment):
             validate_vote(value)
     else:
         assert validate_vote(value) is result
-

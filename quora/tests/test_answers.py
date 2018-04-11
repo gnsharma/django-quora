@@ -13,7 +13,7 @@ examples = (("text", "result", "comment"),
             [
                 ("answer text", True, "Answer text not empty"),
                 ("", False, "Answer text is empty"),
-            ])
+])
 
 
 @pytest.mark.django_db
@@ -27,4 +27,3 @@ def test_answer_model(answer, text, result, comment):
         answer.save()
         answer = Answer.objects.get(answer_text=text)
         assert answer.answer_text == text
-

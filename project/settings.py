@@ -27,7 +27,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -38,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'hamlpy',
-    'quora.apps.QuoraConfig',
+    'quora',
     'social_django',
 ]
 
@@ -148,3 +147,16 @@ LOGIN_REDIRECT_URL = 'quora:home'
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '96089737359-n0h92frc7nanns74ms3eal31tphevmh5.apps.googleusercontent.com'
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'lIIIVyK4xsD21kcqxIJH_aRq'
+
+# CELERY STUFF
+CELERY_BROKER_URL = 'sqla+mysql://root@localhost/quora'
+CELERY_RESULT_BACKEND = 'db+mysql://root@localhost/quora'
+CELERY_TIMEZONE = 'Asia/Kolkata'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'gnsharma0810@gmail.com'
+EMAIL_HOST_PASSWORD = 'project@1234'
+DEFAULT_FROM_EMAIL = 'Govind <gnsharma0810@gmail.com>'

@@ -16,7 +16,7 @@ examples = (("value", "result", "comment"),
                 (-1, True, "Should be valid"),
                 (10, False, "Should not be valid"),
                 (-10, False, "Should not be valid"),
-            ])
+])
 
 
 @pytest.mark.django_db

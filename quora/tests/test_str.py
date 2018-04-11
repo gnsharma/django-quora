@@ -43,4 +43,3 @@ def test_str_returns_vote_value_in_questionvotes(questionvotes):
 def test_str_returns_vote_value_in_answervotes(answervotes):
     answervotes.value = 1
     assert str(answervotes) == str(answervotes.value)
-

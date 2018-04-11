@@ -1,6 +1,6 @@
 from django.conf.urls import url
 
-from quora.views.common import HomeView, SignupView, LogoutView
+from quora.views.common import HomeView, SignupView, LogoutView, FeedbackView
 from quora.views.questions import FeedView, AddQuestionView, QuestionView, QuestionVotesView
 from quora.views.answers import AddAnswerView, AnswerVotesView
 from quora.views.topics import AddTopicView
@@ -11,6 +11,7 @@ urlpatterns = [
     url(r'^login$', HomeView.as_view(), name='login'),
     url(r'^logout$', LogoutView.as_view(), name='logout'),
     url(r'^feed$', FeedView.as_view(), name='feed'),
+    url(r'^feedback$', FeedbackView.as_view(), name="feedback"),
     # url(r'^questions/(?P<id>[0-9])/$', QuestionView.as_view(), name='question'),
     url(r'^questions', QuestionView.as_view(), name='question'),
     url(r'^vote/question$', QuestionVotesView.as_view(), name='question-vote'),

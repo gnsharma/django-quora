@@ -2,13 +2,14 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.views import View
+from django.views.generic.edit import FormView
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
 from django.contrib import messages
 
 from quora.models import Profile
-from quora.forms import SignupForm, LoginForm
+from quora.forms import SignupForm, LoginForm, FeedbackForm
 
 
 class SignupView(View):
@@ -67,3 +68,16 @@ class LogoutView(View):
     def get(self, request, *args, **kwargs):
         logout(request)
         return HttpResponseRedirect(reverse('quora:home'))
+
+
+class FeedbackView(View):
+
+    def get(self, request, *args, **kwargs):
+        form = FeedbackForm()
+        return render(request, 'quora/feedback/feedback.haml', {'form': form})
+
+    def post(self, request, *args, **kwargs):
+        form = FeedbackForm(request.POST)
+        if form.is_valid():
+            form.send_email()
+            return HttpResponseRedirect(reverse('quora:feed'))

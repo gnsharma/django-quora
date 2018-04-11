@@ -1,7 +1,8 @@
 from django.forms import ModelChoiceField, ModelMultipleChoiceField, EmailField, CharField, Form
-from django.forms import ModelForm, Textarea, PasswordInput
+from django.forms import ModelForm, Textarea, HiddenInput, PasswordInput
 
 from quora.models import Topic
+from quora.tasks import send_feedback_email_task
 
 
 class SignupForm(Form):
@@ -37,3 +38,12 @@ class QuestionForm(Form):
 class TopicForm(Form):
 
     topic = CharField(label='Topic')
+
+
+class FeedbackForm(Form):
+    email = EmailField(label="Email Address")
+    message = CharField(label="Message", widget=Textarea(attrs={'rows': 5}))
+    honeypot = CharField(widget=HiddenInput(), required=False)
+
+    def send_email(self):
+        send_feedback_email_task.delay(self.cleaned_data['email'], self.cleaned_data['message'])

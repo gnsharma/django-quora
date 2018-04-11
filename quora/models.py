@@ -118,4 +118,3 @@ class AnswerVotes(models.Model):
         self.full_clean()
         # Call the "real" save() method in the base class 'models.Model'
         super(AnswerVotes, self).save(*args, **kwargs)
-
