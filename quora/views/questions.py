@@ -66,7 +66,8 @@ class QuestionVotesView(LoginRequiredMixin, View):
         vote_type = request.POST.get('type')
 
         try:
-            vote = QuestionVotes.objects.get(question__id=question_id, user=request.user)
+            vote = QuestionVotes.objects.get(
+                question__id=question_id, user=request.user)
         except ObjectDoesNotExist:
             vote = QuestionVotes()
             vote.question = Question.objects.get(pk=question_id)
@@ -76,8 +77,10 @@ class QuestionVotesView(LoginRequiredMixin, View):
             voting_logic(vote_type, vote)
 
             vote.save()
-            up_count = QuestionVotes.objects.filter(question__id=question_id, value=1).count()
-            down_count = QuestionVotes.objects.filter(question__id=question_id, value=-1).count()
+            up_count = QuestionVotes.objects.filter(
+                question__id=question_id, value=1).count()
+            down_count = QuestionVotes.objects.filter(
+                question__id=question_id, value=-1).count()
             total = up_count - down_count
             return HttpResponse(json.dumps({'vote': vote.value, 'total': total,
                                             'up_count': up_count, 'down_count': down_count}))
